@@ -1,8 +1,6 @@
 function main()
     attempts=0
     valid_expr = false   # have you provided a valid expression?
-    #possible_numers=["1","2","3","4","5","6","7","8","9","0"]
-    #possible_symbols=["+","-","*","/","="]
     solution="31+12=43"
     println("the solution is: ", solution)
     # print("-> give me an expression:   ")
@@ -35,27 +33,23 @@ function main()
         end
     end # end of while (input !=solution)
     #if attempts!=0; println("you got it in ",attempts," attempts!"); end
-    println("Well done!")
+    println("You guessed! Well done!")
 end    # end of main()
 
 
 
 function checkProvidedInput(input)
-    valid_expr=true  # on the first failed test, valid_expr will be set to true
-
-    # TO DO : 
-            # - rhs can only be numbers
+    valid_expr=true  # on the first failed test, valid_expr will be set to false
     if length(input)!=8
         println("Wrong number of input characters")
         valid_expr = false
     elseif !occursin(r"(^[^=]+=[^=]+$)", input) 
         println("Invalid expression: equals sign either not provided or in the wrong place")
         valid_expr = false
+    
     end
 
-    try    # try if you can do maths with the provided characters
-        #valid_expxr = true  # if the following lines work, valid_expr will be true.  (NOT NEEDED ???) 
-        # TRY TO COMMENT OUT PREVIOUS LINE
+    try    # try if you can 1. split with '=' and 2. do maths with the provided characters
         lhs,rhs=split(input, "="; limit=2)    # Splitting it into left hand side (lhs) and right hand side (rhs) - (only once)
         lhs_parsed=Meta.parse(lhs)
         rhs_parsed=Meta.parse(rhs)
@@ -63,6 +57,9 @@ function checkProvidedInput(input)
         if occursin(r"([^0-9.])", rhs)  # search for non-numeric in rhs (can only be a number)
             println("there are non-numeric characters after the equals sign.")
             valid_expxr = false
+        elseif !occursin(r"(^[0-9+\-*\/=]+$)",lhs)
+            println("Invalid expression: allowed characters are numbers and +,-,*,/")
+            valid_expr = false
         elseif rhs_parsed != lhs_result  # does the provided lhs match rhs?
             println("you can't do maths -.-' ")
             valid_expr = false
