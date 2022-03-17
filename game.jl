@@ -5,9 +5,7 @@ function main()
     println("the solution is: ", solution)
     # print("-> give me an expression:   ")
     input = 0
-    # if input ==solution
-    #     println("how the heck did you get it in 1 attempt??")
-    # end
+
     while (input !=solution)
         #println("You entered: ",input,", this is not the solution. Checking if it's valid...")
         while (!valid_expr)
@@ -29,7 +27,8 @@ function main()
         #input = readline()  # try again !
         if input !=solution
             valid_expr=false   # reset default to false so I can enter the !valid_expr loop again
-            print("Not Correct. Try again. ")
+            giveHints(input,solution)
+            #print("Not Correct. Try again. ")
         end
     end # end of while (input !=solution)
     #if attempts!=0; println("you got it in ",attempts," attempts!"); end
@@ -50,7 +49,7 @@ function checkProvidedInput(input)
     end
 
     try    # try if you can 1. split with '=' and 2. do maths with the provided characters
-        lhs,rhs=split(input, "="; limit=2)    # Splitting it into left hand side (lhs) and right hand side (rhs) - (only once)
+        lhs,rhs=split(input, "="; limit=2)    # Splitting it into left hand side (lhs) and right hand side (rhs) - (limit=2 means only once)
         lhs_parsed=Meta.parse(lhs)
         rhs_parsed=Meta.parse(rhs)
         lhs_result=eval(lhs_parsed)
@@ -76,4 +75,28 @@ function checkProvidedInput(input)
     return valid_expr # let the main function know if the expression is ok or not
 end
 
+function giveHints(input,solution)
+    # TO DO:
+    #   if hint already given, don't do it again unless there's another one.
+    #   = if n of same character in guess > n of that same character in answer, skip
+    input_array=split(input,"")    # get the input into the form of an array
+    solution_array=split(solution,"")   # get the solution into the form of an array
+    hint_sequence=[]   # initialise the sequence that will store the hints
+    for i = 1:length(input_array)  # go through all elements
+        guess=input_array[i]       # your guess, one by one
+        indexes=findall(x->x==guess, solution_array)
+        correct=solution_array[i]  # the correct character that should be in that position
+        if guess==correct          
+            append!(hint_sequence,'*')    # if the guess matched, append a star.
+        elseif !isempty(indexes)
+            append!(hint_sequence,'o')    # if the guess occurs somewhere else, append an 'o'.
+        else
+            append!(hint_sequence,'-')    # if the guess occurs doesn't occur, append a '-'.
+        end
+    end
+    println(hint_sequence)
+end
+
+
+# execute:
 main()
