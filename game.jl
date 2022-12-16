@@ -55,7 +55,7 @@ function checkProvidedInput(input)
         lhs_result=eval(lhs_parsed)
         if occursin(r"([^0-9.])", rhs)  # search for non-numeric in rhs (can only be a number)
             println("there are non-numeric characters after the equals sign.")
-            valid_expxr = false
+            valid_expr = false
         elseif !occursin(r"(^[0-9+\-*\/=]+$)",lhs)
             println("Invalid expression: allowed characters are numbers and +,-,*,/")
             valid_expr = false
@@ -66,11 +66,6 @@ function checkProvidedInput(input)
     catch
         println("that doesn't look like maths to me")
         valid_expr = false
-        # println("length of lhs is ",length(lhs), ", its components are:")
-        # for i = 1:length(lhs)
-        #     println(lhs[i])
-        # end
-        # println("The result is: ",lhs_result)
     end
     return valid_expr # let the main function know if the expression is ok or not
 end
@@ -82,8 +77,8 @@ function giveHints(input,solution)
     input_array=split(input,"")    # get the input into the form of an array
     solution_array=split(solution,"")   # get the solution into the form of an array
     hint_sequence=[]   # initialise the sequence that will store the hints
-    for i = 1:length(input_array)  # go through all elements
-        guess=input_array[i]       # your guess, one by one
+    # for i = 1:length(input_array)  # go through all elements
+    for (i, guess) in enumerate(input_array)  # go through elements of guess, one by one
         indexes=findall(x->x==guess, solution_array)
         correct=solution_array[i]  # the correct character that should be in that position
         if guess==correct          
