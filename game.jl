@@ -1,12 +1,22 @@
+"""
+Nerdle game!
+The user gives a (valid) mathematical expression as input, the code gives hints back until the user guesses.
+- '*' = the character is in the solution and in the right place
+- 'o' = the character is in the solution but not in the right place
+- '-' = the character is not in the solution
+"""
 function main()
     attempts=0
     valid_expr = false   # have you provided a valid expression?
-    solution="31+12=43"
+    solution="31+12=43"  # temporarily specify it here
     println("the solution is: ", solution)
     # print("-> give me an expression:   ")
     input = 0
 
     while (input !=solution)
+        """
+        keep going until the input matches the solution
+        """
         #println("You entered: ",input,", this is not the solution. Checking if it's valid...")
         while (!valid_expr)
             print("-> give me an expression:   ")
@@ -36,8 +46,11 @@ function main()
 end    # end of main()
 
 
-
+"""
+Check that the input expression is valid
+"""
 function checkProvidedInput(input)
+
     valid_expr=true  # on the first failed test, valid_expr will be set to false
     if length(input)!=8
         println("Wrong number of input characters")
@@ -70,10 +83,15 @@ function checkProvidedInput(input)
     return valid_expr # let the main function know if the expression is ok or not
 end
 
+
+"""
+Based on the user's guess, give hints for each character in the guess.
+
+TO DO:
+   if hint about a character was already given, don't do it again unless there's another one.
+   i.e. if n of same character in guess > n of that same character in answer, skip
+"""
 function giveHints(input,solution)
-    # TO DO:
-    #   if hint already given, don't do it again unless there's another one.
-    #   = if n of same character in guess > n of that same character in answer, skip
     input_array=split(input,"")    # get the input into the form of an array
     solution_array=split(solution,"")   # get the solution into the form of an array
     hint_sequence=[]   # initialise the sequence that will store the hints
